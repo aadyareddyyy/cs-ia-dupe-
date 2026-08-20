@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Revision</h1>
+
+{% if not items %}
+  <p>Mark a topic 100% complete in Subjects to add it here.</p>
+{% else %}
+  {% for r in items %}
+  <div class="item-row">
+    {{ r.label }} - {{ 'Due today' if r.due else 'Due ' + fmt_date(r.next_date) }}
+    <form method="post" action="{{ url_for('mark_revised', item_id=r.id) }}">
+      <button type="submit">Mark revised</button>
+    </form>
+  </div>
+  {% endfor %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>CLAT Preparation Tracker</h1>
+<p>Enter a profile name to continue.</p>
+<form method="post">
+  <div class="field">
+    <label>Profile name</label>
+    <input name="name" placeholder="e.g. ananya" autofocus>
+  </div>
+  <button type="submit">Enter</button>
+</form>
+{% endblock %}

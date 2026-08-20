@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Study Log</h1>
+
+<form method="post">
+  <div class="field"><label>Date</label><input type="date" name="date" value="{{ today }}"></div>
+  <div class="field"><label>Section</label>
+    <select name="subject_id">
+      {% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field"><label>Hours</label><input type="number" step="0.25" name="hours" required></div>
+  <button type="submit">Add entry</button>
+</form>
+
+<hr>
+
+<h2>Total hours by section</h2>
+{% for s in subject_totals %}
+<p>{{ s.name }}: {{ s.total }}h</p>
+{% endfor %}
+
+{% endblock %}

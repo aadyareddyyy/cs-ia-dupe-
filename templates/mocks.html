@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Mock Tests</h1>
+
+<form method="post">
+  <div class="field"><label>Date</label><input type="date" name="date" value="{{ today }}"></div>
+  {% for s in subjects %}
+  <div class="field">
+    <label>{{ s.name }} ({{ s.max }} questions)</label>
+    <input type="number" step="1" min="0" name="{{ s.id }}_correct" placeholder="Correct">
+    <input type="number" step="1" min="0" name="{{ s.id }}_incorrect" placeholder="Incorrect">
+    <input type="number" step="1" min="0" name="{{ s.id }}_unattempted" placeholder="Unattempted">
+  </div>
+  {% endfor %}
+  <button type="submit">Save mock test</button>
+</form>
+
+<hr>
+
+<h2>Latest mock - breakdown</h2>
+{% if latest_breakdown %}
+<p>Overall: {{ latest_percentage }}%</p>
+<table>
+  <tr><th>Section</th><th>Attempted</th><th>Unattempted</th><th>Correct</th><th>Incorrect</th><th>Marks from Correct</th><th>Marks from Incorrect</th><th>Actual Score</th><th>Accuracy</th></tr>
+  {% for row in latest_breakdown %}
+  <tr>
+    <td>{{ row.name }}</td>
+    <td>{{ row.attempted }}/{{ row.max }}</td>
+    <td>{{ row.unattempted }}</td>
+    <td>{{ row.correct }}</td>
+    <td>{{ row.incorrect }}</td>
+    <td>{{ row.marks_correct }}</td>
+    <td>{{ row.marks_incorrect }}</td>
+    <td>{{ row.actual_score }}</td>
+    <td>{{ row.accuracy_pct }}%</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No mock tests logged yet.</p>
+{% endif %}
+
+<hr>
+
+<h2>Sections ranked</h2>
+{% if latest_ranked_sections %}
+<table>
+  <tr><th>Rank</th><th>Section</th><th>Score</th><th>Score %</th></tr>
+  {% for row in latest_ranked_sections %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ row.name }}</td>
+    <td>{{ row.actual_score }}/{{ row.max }}</td>
+    <td>{{ row.score_pct }}%</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No mock tests logged yet.</p>
+{% endif %}
+
+<hr>
+
+<h2>Correct / incorrect / not attempted</h2>
+{% if pie_chart_url %}
+  <img class="chart-img" src="{{ pie_chart_url }}" alt="Correct vs incorrect vs not attempted pie chart">
+{% else %}
+  <p>No mock tests logged yet.</p>
+{% endif %}
+
+<h2>History</h2>
+<table>
+  <tr><th>Date</th><th>Questions</th><th>Score</th><th>Percentage</th></tr>
+  {% for m in mocks %}
+  <tr><td>{{ fmt_date(m.date) }}</td><td>{{ m.total_questions }}</td><td>{{ m.total_score }}</td><td>{{ m.percentage }}%</td></tr>
+  {% else %}
+  <tr><td colspan="4">No entries yet.</td></tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
